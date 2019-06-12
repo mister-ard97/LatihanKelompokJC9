@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quiz Sederhana</title>
+
+    <style>
+        body {
+            background: green;
+        }
+
+        div {
+            margin: 0 auto;
+            width: 700px;
+            height: 1000px;
+            background: yellow;
+        }
+
+        p {
+            text-align: left;
+            padding-left: 5px;
+            margin-bottom: 5px;
+        }
+        h1, #NamaPemain, #catatanWaktu {
+            text-align: center;
+        }
+
+        .nomor {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        #namaPemain {
+            text-align: center;
+        }
+
+        .container1 {
+            text-align: center;
+            height: 25px;
+            margin-bottom: 30px;
+        }
+
+        #countdown, #CheckNama {
+            font-weight: bold;
+            text-align: center;
+            color: blue;
+        }
+
+        #hasil {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .hasilQuiz {
+            border: 1px solid black;
+            width: 500px;
+            height: 150px;
+            margin-top: 30px;
+            margin-left: 80px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Nama : 
+        Muhammad Reza Ardiansyah
+        Rommy Sitohang
+        Sri Anggraini 
+    -->
+
+        <div>
+            <table>
+                <h1>Quiz Sederhana</h1>
+
+                <div class="container1">
+                    <input type="text" id="namaPemain" placeholder="Masukkan Nama">
+                    <input type="button" onclick='startQuiz()' value='Mulai Quiz'>
+                    <p id="CheckNama"></p>
+                    <p id="countdown"></p>
+                </div>
+                
+
+                <p class="nomor">Nomor 1</p>
+                <p>Tahun berapa Iphone 8 release...</p>
+                <input type="radio" value="2016">2016
+                <input type="radio" value="2017" id="nomor1">2017
+                <input type="radio" value="2018">2018
+            
+                <p class="nomor">Nomor 2</p>
+                <p>Siapa pendiri Facebook</p>
+                <input type="radio" value="Mark" id="nomor2">Mark Zuckerberg
+                <input type="radio" value="Mark2">Mark Zukerberg
+                <input type="radio" value="Mark3">Mark Zuckerbeg
+            
+                <p class="nomor">Nomor 3</p>
+                <p>Siapa pendiri GO-JEK</p>
+                <input type="radio" value="Achmad">Achmad Zaky
+                <input type="radio" value="Nadiem" id="nomor3">Nadiem Makarim
+                <input type="radio" value="William">William Tanuwijaya
+            
+                <p class="nomor">Nomor 4</p>
+                <p>Berapa gaji full stack developer menurut website https://insights.stackoverflow.com/survey/2019#salary</p>
+                <input type="radio" value="110" id="nomor4">$110k
+                <input type="radio" value="120">$120k
+                <input type="radio" value="130">$130k
+            
+                <p class="nomor">Nomor 5</p>
+                <p>Berikut adalah lokasi kampus Purwadhika, Kecuali...</p>
+                <input type="radio" value="BSD">BSD
+                <input type="radio" value="Sudirman">Sudirman
+                <input type="radio" value="Tanah Abang" id="nomor5">Tanah Abang
+            </table>
+        </div>
+
+        <script>
+            var namaPemain = '';
+                var resultWaktu = 0;
+                function startQuiz() {
+                    var nama = document.getElementsByTagName('input')[0].value;
+                    if (nama == '') {
+                        document.getElementById('CheckNama').innerHTML = `Kotak nama harus diisi`;
+                    } else {
+                        namaPemain = nama;
+                        var buttonMulai = document.getElementsByTagName('input')[1];
+
+                        document.getElementById('CheckNama').innerHTML = '';
+                        document.getElementsByTagName('input')[0].parentNode.removeChild(document.getElementsByTagName('input')[0]);
+                        buttonMulai.parentNode.removeChild(buttonMulai);
+
+                        document.getElementsByTagName('table')[0].innerHTML += `<input type="button" onclick="result()" value="Submit" id="hasil">`;
+
+                        countdown();
+                    }
+                }
+
+                function countdown() {
+                    var waktu = 30;
+                    var countdownTimer = setInterval(() => {
+                        resultWaktu = waktu;
+
+                        document.getElementById('countdown').innerHTML = `Waktu anda untuk mengerjakan soal = ${waktu} detik`;
+                        waktu -= 1;
+                        if (waktu < 0) {
+                            document.getElementById('countdown').innerHTML = 'Waktu anda habis';
+                            clearInterval(countdownTimer);
+                            result();
+                            var button = document.getElementById('hasil');
+                            button.parentNode.removeChild(button);
+                        }
+                    }, 1000);
+                }
+
+                function result() {
+                    
+                    var nilai = 0;
+                    var arrJawaban = [];
+                    var jawaban1 = document.getElementById('nomor1');
+                    var jawaban2 = document.getElementById('nomor2');
+                    var jawaban3 = document.getElementById('nomor3');
+                    var jawaban4 = document.getElementById('nomor4');
+                    var jawaban5 = document.getElementById('nomor5');
+                    var button = document.getElementById('hasil');
+                    document.getElementById('countdown').innerHTML = ``;
+                    
+
+                    arrJawaban.push(jawaban1, jawaban2, jawaban3, jawaban4, jawaban5);
+                    for (let x = 0; x < arrJawaban.length; x++) {
+                        if (arrJawaban[x].checked) {
+                            nilai += 20;
+                        }
+                    }
+
+                    document.getElementsByTagName('table')[0].innerHTML = `<div class='hasilQuiz'></div`
+                    document.getElementsByClassName('hasilQuiz')[0].innerHTML = `
+                    <p id="NamaPemain"></p>
+                    <h1></h1>
+                    <p id="catatanWaktu"></p>`;
+
+                    document.getElementById('NamaPemain').innerHTML = `Nama anda adalah ${namaPemain}`;
+                    document.getElementsByTagName('h1')[1].innerHTML = `Nilai anda adalah ${nilai}`;
+
+                    if(resultWaktu < 1) {
+                        document.getElementById('catatanWaktu').innerHTML = `Waktu anda sudah habis`;
+                        
+                    } else {
+                        document.getElementById('catatanWaktu').innerHTML = `Waktu anda mengerjakan quiz adalah ${30 - resultWaktu} detik`;
+                        
+                    }
+
+                    button.parentNode.removeChild(button);
+                    
+                    }
+
+        
+        </script>
+</body>
+</html>
